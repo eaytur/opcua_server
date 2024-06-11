@@ -1,0 +1,9 @@
+[requires]
+open62541/1.3.9
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[layout]
+cmake_layout
