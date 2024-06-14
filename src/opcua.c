@@ -12,13 +12,18 @@ static void stopHandler(int sig) {
   running = false;
 }
 
-UA_StatusCode opcua_server_loop(void) {
+UA_StatusCode opcua_server_loop(char *hostname, int port) {
+
+  UA_String host = UA_STRING(hostname);
+
   signal(SIGINT, stopHandler);
   signal(SIGTERM, stopHandler);
 
   UA_Server *server = UA_Server_new();
-  UA_StatusCode retVal =
-      UA_ServerConfig_setDefault(UA_Server_getConfig(server));
+  UA_ServerConfig *config = UA_Server_getConfig(server);
+  UA_String_clear(&config->customHostname);
+  UA_String_copy(&host, &config->customHostname);
+  UA_StatusCode retVal = UA_ServerConfig_setMinimal(config, port, NULL);
 
   retVal = UA_Server_run(server, &running);
 

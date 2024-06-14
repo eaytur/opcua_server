@@ -3,6 +3,6 @@
 
 #include <open62541/server.h>
 
-UA_StatusCode opcua_server_loop(void);
+UA_StatusCode opcua_server_loop(char *hostname, int port);
 
 #endif //OPCUA_H

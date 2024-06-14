@@ -6,7 +6,7 @@
 int main(void) {
   printf("Open62541-lib-version: %s\n", UA_OPEN62541_VERSION);
 
-  UA_StatusCode retVal = opcua_server_loop();
+  UA_StatusCode retVal = opcua_server_loop("localhost", 3535);
 
   return retVal ? EXIT_FAILURE : EXIT_SUCCESS;
 }
