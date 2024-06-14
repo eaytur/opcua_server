@@ -8,8 +8,11 @@ project(
 
 find_package(open62541 REQUIRED)
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
 set(SOURCES
     src/main.c
+    src/opcua.c
 )
 
 add_executable(opcua_server ${SOURCES})
