@@ -31,3 +31,8 @@ cmake -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE="build/Debug/generators/conan_too
 ```bash
 cmake --build build 
 ```
+
+### Run
+```bash
+./opcua_server --host <hostname> --port <port>
+```
