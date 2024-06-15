@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     return retVal;
   }
 
-  while (get_opc_status()) {
+  while (opcua_get_server_status()) {
     printf(".");
     fflush(stdout);
     sleep(1);

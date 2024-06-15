@@ -13,12 +13,16 @@ typedef struct thread_args {
   int port;
 } thread_args_t;
 
+static void stopHandler(int sig);
+static UA_StatusCode opcua_server_loop(char *hostname, int port);
+static void *opcua_server_thread(void *args);
+
 static void stopHandler(int sig) {
   UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND, "received ctrl-c");
   running = false;
 }
 
-UA_StatusCode opcua_server_loop(char *hostname, int port) {
+static UA_StatusCode opcua_server_loop(char *hostname, int port) {
 
   UA_String host = UA_STRING(hostname);
 
@@ -38,13 +42,15 @@ UA_StatusCode opcua_server_loop(char *hostname, int port) {
   return retVal;
 }
 
-void *opcua_server_thread(void *args) {
+static void *opcua_server_thread(void *args) {
   thread_args_t *threadArgs = (thread_args_t *)args;
   opcua_server_loop(threadArgs->hostname, threadArgs->port);
 
   free(threadArgs);
   return NULL;
 }
+
+bool opcua_get_server_status(void) { return running; }
 
 int opcua_run(char *host, int port) {
   pthread_t opcThread;
@@ -73,5 +79,3 @@ int opcua_run(char *host, int port) {
 
   return EXIT_SUCCESS;
 }
-
-bool get_opc_status(void) { return running; }
