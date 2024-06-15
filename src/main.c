@@ -2,11 +2,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main(void) {
-  printf("Open62541-lib-version: %s\n", UA_OPEN62541_VERSION);
 
-  UA_StatusCode retVal = opcua_server_loop("localhost", 3535);
+  int retVal = opcua_run("localhost", 3535);
+  if (retVal != EXIT_SUCCESS) {
+    return retVal;
+  }
 
-  return retVal ? EXIT_FAILURE : EXIT_SUCCESS;
+  while (get_opc_status()) {
+    printf(".");
+    fflush(stdout);
+    sleep(1);
+  };
+
+  return retVal;
 }
