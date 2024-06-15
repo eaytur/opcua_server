@@ -2,11 +2,29 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
-int main(void) {
+int main(int argc, char *argv[]) {
+  char *host = NULL;
+  int port = 0;
 
-  int retVal = opcua_run("localhost", 3535);
+  for (int i = 1; i < argc; i++) {
+    if (strcmp(argv[i], "--host") == 0 && i + 1 < argc) {
+      host = argv[++i];
+    } else if (strcmp(argv[i], "--port") == 0 && i + 1 < argc) {
+      port = atoi(argv[++i]);
+    } else {
+      printf("Unknown or incomplete argument: %s\n", argv[i]);
+      return EXIT_FAILURE;
+    }
+  }
+
+  if (host == NULL || port == 0) {
+    printf("Missing required arguments!\n");
+    printf("Usage: opcua_server --host <hostname> --port <portnumber>\n");
+    return EXIT_FAILURE;
+  }
+
+  int retVal = opcua_run(host, port);
   if (retVal != EXIT_SUCCESS) {
     return retVal;
   }
@@ -17,5 +35,5 @@ int main(void) {
     sleep(1);
   };
 
-  return retVal;
+  return EXIT_SUCCESS;
 }
